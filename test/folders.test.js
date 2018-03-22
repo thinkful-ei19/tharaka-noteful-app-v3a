@@ -125,7 +125,6 @@ describe('Noteful API - Folders', function () {
 
     it('should create and return a new item when provided valid data', function () {
       const newItem = {
-        'id': '111111111111111111111106',
         'name': 'Cats'
       };
 
@@ -150,7 +149,6 @@ describe('Noteful API - Folders', function () {
 
     it('should return an error when posting an object with a missing "name" field', function () {
       const newItem = {
-        'id': '111111111111111111111106'
       };
 
       return chai.request(app)
