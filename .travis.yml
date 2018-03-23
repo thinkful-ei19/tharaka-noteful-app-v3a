@@ -1,10 +1,10 @@
 language: node_js
 node_js: node
 services: mongodb
-# deploy:
-#     provider: heroku
-#     api_key:
-#       secure: [YOUR-API-KEY]
-#     app: [YOUR-APP-NAME]
-#     on:
-#       repo: [YOUR-APP-REPO]
+deploy:
+  provider: heroku
+  api_key:
+    secure: UAhQBBHh08sy8UZp5NmZvWYnBe1NQVOPPLnWaB7I7eliOiskD4hwfbeC5NHNb0o/uXDAb4Sb+z1BXm4VBmP6bv5QcIgMZxtmAQvs4969J36FJUWF3XLJU7K3/3/Ym+0Uwqr1psGDIRwAYU5KZerp8rS8lRbj1oEi1oqlblSHl1KBtlzN408XfABWUJxkqd3gLwUG4gVSsZM7Yl2zz2ZCROsTAcaHp1fMDH6JJ2wkaP2y0xNMGi9sIu7UngZgfrPplczGfhyAL5be6iparsueV7nPNn56HDxjbAMdsUtpWMK4Kh8poWgvaXRZvyqLzWDuCWJWBUwTYODBJreeQO/S1Q3Krc6Xdnizo4M/4EXAzRMea1rcf6Jf7pQGm5xqMjgc3SMziq4nS4ftcqt1VTg3d378z6QC8JoKs5W5uOWw2iTDx1tbJK1TNIGDpJ7UnjNIW8PC34msyz3B9S4Ly8eHTUQMrobsZl5wEaBpa+CFK6vd8dnRv0XsQojcgzVUJOmG5w3I6poCY64LQtNmW8wuoQdUk7mMgKm0hAP6J7UGKd7igrBqGERo61nFLwWHETerIT/SwUh4O6fG++xDmZ3TCAUHeMbyR9ww/yQg6nrir8PWvnLyI6yvV0Laaq+BwlOg6WRuciBsRWOIqULret5ZVOxR3Q3A7+II2P61E6Z1ZDo=
+  app: tharaka-noteful-app-v3a
+  on:
+    repo: thinkful-ei19/tharaka-noteful-app-v3a
