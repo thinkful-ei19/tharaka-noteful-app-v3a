@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const tagSchema = new mongoose.Schema({
   name: { type: String, unique: true }
+  // create: { type: Date, default: Date.now }
 });
 
 tagSchema.set('toObject', {

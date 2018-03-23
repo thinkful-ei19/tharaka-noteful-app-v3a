@@ -217,7 +217,7 @@ const noteful = (function () {
         store.currentNote = {};
       }
 
-      console.log('Get notes by folderId, coming soon...');
+      //console.log('Get notes by folderId, coming soon...');
       api.search('/api/notes', store.currentQuery)
         .then(response => {
           store.notes = response;
@@ -232,7 +232,7 @@ const noteful = (function () {
 
       const newFolderName = $('.js-new-folder-entry').val();
 
-      console.log('Create a folder, coming soon...');
+      //console.log('Create a folder, coming soon...');
       api.create('/api/folders', { name: newFolderName })
         .then(() => {
           $('.js-new-folder-entry').val();
@@ -258,7 +258,7 @@ const noteful = (function () {
         store.currentNote = {};
       }
 
-      console.log('Delete a folder, coming soon...');
+      //console.log('Delete a folder, coming soon...');
       api.remove(`/api/folders/${folderId}`)
         .then(() => {
           return api.search('/api/folders');
@@ -282,12 +282,12 @@ const noteful = (function () {
 
       store.currentNote = {};
 
-      console.log('Get notes by tagId, coming soon...');
-      // api.search('/api/notes', store.currentQuery)
-      //   .then(response => {
-      //     store.notes = response;
-      //     render();
-      //   });
+      //console.log('Get notes by tagId, coming soon...');
+      api.search('/api/notes', store.currentQuery)
+        .then(response => {
+          store.notes = response;
+          render();
+        });
     });
   }
 
@@ -297,17 +297,17 @@ const noteful = (function () {
 
       const newTagName = $('.js-new-tag-entry').val();
 
-      console.log('Create a tag, coming soon...');
-      // api.create('/api/tags', { name: newTagName })
-      //   .then(() => {
-      //     return api.search('/api/tags');
-      //   }).then(response => {
-      //     store.tags = response;
-      //     render();
-      //   })
-      //   .catch(err => {
-      //     console.error(err);
-      //   });
+      //console.log('Create a tag, coming soon...');
+      api.create('/api/tags', { name: newTagName })
+        .then(() => {
+          return api.search('/api/tags');
+        }).then(response => {
+          store.tags = response;
+          render();
+        })
+        .catch(err => {
+          console.error(err);
+        });
     });
   }
 
@@ -322,19 +322,19 @@ const noteful = (function () {
 
       store.currentNote = {};
 
-      console.log('Delete a tag, coming soon...');
-      // api.remove(`/api/tags/${tagId}`)
-      //   .then(() => {
-      //     return api.search('/api/tags');
-      //   })
-      //   .then(response => {
-      //     store.tags = response;
-      //     return api.search('/api/notes', store.currentQuery);
-      //   })
-      //   .then(response => {
-      //     store.notes = response;
-      //     render();
-      //   });
+      //console.log('Delete a tag, coming soon...');
+      api.remove(`/api/tags/${tagId}`)
+        .then(() => {
+          return api.search('/api/tags');
+        })
+        .then(response => {
+          store.tags = response;
+          return api.search('/api/notes', store.currentQuery);
+        })
+        .then(response => {
+          store.notes = response;
+          render();
+        });
     });
   }
 

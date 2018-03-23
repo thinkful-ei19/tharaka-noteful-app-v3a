@@ -167,7 +167,7 @@ describe('Noteful API - Folders', function () {
 
   describe('PUT /api/folders/:id', function () {
 
-    it('should update the note when provided proper valid data', function () {
+    it('should update the folder when provided proper valid data', function () {
       const updateItem = {
         'id': '111111111111111111111101',
         'name': 'random'

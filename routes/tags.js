@@ -114,17 +114,40 @@ router.put('/tags/:id', (req, res, next) => {
   
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/tags/:id', (req, res, next) => {
-  const { id } = req.params;
+  // const { id } = req.params;
     
-  Tag.findByIdAndRemove(id)
-    .then(() => {
+  // Tag.findByIdAndRemove(id)
+  //   .then(() => {
 
-      //Note.update({ $pull: { tags: { $in: [ Tag.findById(id) ] }}});
-      res.status(204).end();
+  //     Note.update({}, 
+  //       { $pull: {tags : id} },
+  //       { multi: true }
+  //     );
+  //     res.status(204).end();
+  //   })
+  //   .catch(err => {
+  //     next(err);
+  //   });
+
+  const { id } = req.params;
+  const tagRemovePromise = Tag.findByIdAndRemove(id);
+  // const tagRemovePromise = Tag.remove({ _id: id }); // NOTE **underscore** _id
+
+  const noteUpdatePromise = Note.updateMany(
+    { 'tags': id, },
+    { '$pull': { 'tags': id } }
+  );
+
+  Promise.all([tagRemovePromise, noteUpdatePromise])
+    .then(([tagResult]) => {
+      if (tagResult) {
+        res.status(204).end();
+      } else {
+        next();
+      }
     })
     .catch(err => {
-      next(err);
-    });
+      next(err); });
 });
   
 
