@@ -5,52 +5,34 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 
-const Note = require('../models/note');
+const Tag = require('../models/tag');
 
-const Tag = require('../models/tag');//modified
-
+const Note = require('../models/note');//Modified
 
 /* ========== GET/READ ALL ITEMS ========== */
-router.get('/notes', (req, res, next) => {
-  const { searchTerm, folderId } = req.query;
+router.get('/tags', (req, res, next) => {
 
-  let filter = {};
-
-  // filter.folderId = folderId; 
-
-  if (searchTerm) {
-    const re = new RegExp(searchTerm, 'i');
-    filter.title = { $regex: re };
-  }
-
-  if(folderId) {
-    filter.folderId = folderId;
-  }
-
-  Note.find(filter)
-    // .populate('tags')
-    .sort('created')
-    .populate('tags')//populate
+  Tag.find()
     .then(results => {
       res.json(results);
     })
     .catch(err => {
       next(err);
     });
+  
 });
 
 /* ========== GET/READ A SINGLE ITEM ========== */
-router.get('/notes/:id', (req, res, next) => {
+router.get('/tags/:id', (req, res, next) => {
   const { id } = req.params;
-
+  
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
     err.status = 400;
     return next(err);
   }
-
-  Note.findById(id)
-    .populate('tags')
+  
+  Tag.findById(id)
     .then(result => {
       if (result) {
         res.json(result);
@@ -62,55 +44,57 @@ router.get('/notes/:id', (req, res, next) => {
       next(err);
     });
 });
-
+  
+  
 /* ========== POST/CREATE AN ITEM ========== */
-router.post('/notes', (req, res, next) => {
-  const { title, content, folderId, tags } = req.body;
-
+router.post('/tags', (req, res, next) => {
+  const { name } = req.body;
+    
   /***** Never trust users - validate input *****/
-  if (!title) {
-    const err = new Error('Missing `title` in request body');
+  if (!name) {
+    const err = new Error('Missing `name` in request body');
     err.status = 400;
     return next(err);
   }
-
-  tags.forEach(item => {
-    // if(item.id) 
-  });
-
-  const newItem = { title, content, folderId, tags };
-
-  Note.create(newItem)
+    
+  const newItem = { name };
+    
+  Tag.create(newItem)
     .then(result => {
       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
     .catch(err => {
+      if (err.code === 11000) {
+        err = new Error('The tag name already exists');
+        err.status = 400;
+      }
       next(err);
     });
 });
-
+  
+  
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
-router.put('/notes/:id', (req, res, next) => {
+router.put('/tags/:id', (req, res, next) => {
   const { id } = req.params;
-  const { title, content, folderId } = req.body;
-
+  const { name } = req.body;
+    
   /***** Never trust users - validate input *****/
-  if (!title) {
-    const err = new Error('Missing `title` in request body');
+  if (!name) {
+    const err = new Error('Missing `name` in request body');
     err.status = 400;
     return next(err);
   }
-
+    
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
     err.status = 400;
     return next(err);
   }
-
-  const updateItem = { title, content, folderId };
+    
+  const updateItem = { name };
   const options = { new: true };
-
-  Note.findByIdAndUpdate(id, updateItem, options)
+    
+  Tag.findByIdAndUpdate(id, updateItem, options)
     .then(result => {
       if (result) {
         res.json(result);
@@ -119,21 +103,29 @@ router.put('/notes/:id', (req, res, next) => {
       }
     })
     .catch(err => {
+      if (err.code === 11000) {
+        err = new Error('The tag name already exists');
+        err.status = 400;
+      }
       next(err);
     });
 });
-
+  
+  
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
-router.delete('/notes/:id', (req, res, next) => {
+router.delete('/tags/:id', (req, res, next) => {
   const { id } = req.params;
-
-  Note.findByIdAndRemove(id)
+    
+  Tag.findByIdAndRemove(id)
     .then(() => {
+
+      //Note.update({ $pull: { tags: { $in: [ Tag.findById(id) ] }}});
       res.status(204).end();
     })
     .catch(err => {
       next(err);
     });
 });
+  
 
 module.exports = router;
